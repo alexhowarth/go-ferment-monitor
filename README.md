@@ -35,8 +35,6 @@ go mod edit -replace github.com/alexhowarth/go-tilt=/<path to go-tilt>/go-tilt
 
 rollup v2.23.0
 bundles src/main.js → public/build/bundle.js...
-Browserslist: caniuse-lite is outdated. Please run:
-npx browserslist@latest --update-db
 LiveReload enabled
 ...
   Your application is ready~! 🚀
