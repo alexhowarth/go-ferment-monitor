@@ -16,9 +16,7 @@ func main() {
 	models.Init()
 
 	p := producer.NewPublisher()
-	println("wft")
 
-	// this needs to be elsewhere, constantly checking to see if enabled has been set on any service and starting it
 	// use channels to restart? reconfigure etc?
 
 	mqttModel := &models.MQTTModel{}
@@ -62,8 +60,7 @@ func main() {
 	scan := 120 * time.Second
 	sleep := 120 * time.Second
 
-	// TODO maybe we just populate a 'found' table here and display it as a table on the first tab
-
+	// TODO maybe we just populate a 'found' table here
 	go func() {
 		for {
 			log.Printf("Goroutines: %v", runtime.NumGoroutine())
