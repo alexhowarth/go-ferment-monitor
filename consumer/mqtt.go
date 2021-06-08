@@ -55,7 +55,7 @@ func (m *MQTT) Listen() {
 				payload := struct {
 					//Beer string  `json:"beer"`
 					C    float64 `json:"temp_c"`
-					F    float64 `json:"temp_f"` // should probably put c and f here for others to use (or can grafana do it?)
+					F    float64 `json:"temp_f"` // scrap f, convert from c
 					Sg   float64 `json:"sg"`
 					Col  string  `json:"col"`
 					Beer string  `json:"beer"`

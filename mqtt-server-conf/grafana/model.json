@@ -1,0 +1,614 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "Shows Temperature and Specific Gravity for all Tilt/Beer combinations",
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 1,
+    "iteration": 1623178138172,
+    "links": [
+      {
+        "icon": "doc",
+        "includeVars": true,
+        "keepTime": true,
+        "tags": [],
+        "title": "BeerSmith Exporter",
+        "type": "link",
+        "url": "http://localhost:12345"
+      }
+    ],
+    "panels": [
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 14,
+        "panels": [],
+        "repeat": null,
+        "title": "Temperature & Specific Gravity",
+        "type": "row"
+      },
+      {
+        "aliasColors": {
+          "Temperature": "rgb(255, 255, 255)"
+        },
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": "InfluxDB",
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {},
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 1
+        },
+        "hiddenSeries": false,
+        "hideTimeOverride": false,
+        "id": 2,
+        "interval": "15m",
+        "legend": {
+          "alignAsTable": false,
+          "avg": false,
+          "current": true,
+          "hideEmpty": false,
+          "hideZero": false,
+          "max": false,
+          "min": false,
+          "rightSide": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "links": [],
+        "maxPerRow": 2,
+        "nullPointMode": "null",
+        "options": {
+          "dataLinks": []
+        },
+        "paceLength": 10,
+        "percentage": false,
+        "pluginVersion": "7.0.0",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "repeat": "beertiltcombo",
+        "repeatDirection": "h",
+        "seriesOverrides": [
+          {
+            "alias": "Specific Gravity",
+            "yaxis": 2
+          },
+          {
+            "alias": "",
+            "color": "#73BF69"
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "alias": "Temperature",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "none"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "measurement": "mqtt_consumer",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"temp\") FROM \"autogen\".\"mqtt_consumer\" WHERE topic =~ /^tilt\\/$beertiltcombo$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+            "rawQuery": true,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "temp"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "topic",
+                "operator": "=~",
+                "value": "/^$BEER$/"
+              }
+            ]
+          },
+          {
+            "alias": "Specific Gravity",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "none"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "mqtt_consumer",
+            "orderByTime": "ASC",
+            "policy": "autogen",
+            "query": "SELECT mean(\"sg\") FROM \"autogen\".\"mqtt_consumer\" WHERE topic =~ /^tilt\\/$beertiltcombo$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "sg"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "topic",
+                "operator": "=~",
+                "value": "/^$BEER$/"
+              }
+            ]
+          },
+          {
+            "alias": "COLOUR",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "mqtt_consumer",
+            "orderByTime": "ASC",
+            "policy": "autogen",
+            "query": "SELECT first(\"colour\") FROM \"autogen\".\"mqtt_consumer\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
+            "rawQuery": true,
+            "refId": "C",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "$beertiltcombo",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": null,
+            "format": "celsius",
+            "label": "Temperature",
+            "logBase": 1,
+            "max": null,
+            "min": null,
+            "show": true
+          },
+          {
+            "decimals": null,
+            "format": "none",
+            "label": "Specific Gravity",
+            "logBase": 1,
+            "max": "1.1",
+            "min": "0.99",
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": false,
+          "alignLevel": null
+        }
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 9
+        },
+        "id": 16,
+        "panels": [],
+        "repeat": null,
+        "title": "Apparent Attentuation & ABV",
+        "type": "row"
+      },
+      {
+        "aliasColors": {
+          "ABV": "light-blue",
+          "Attenuation": "semi-dark-blue"
+        },
+        "bars": false,
+        "dashLength": 10,
+        "dashes": false,
+        "datasource": null,
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": null
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "fill": 1,
+        "fillGradient": 0,
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 10
+        },
+        "hiddenSeries": false,
+        "id": 24,
+        "legend": {
+          "alignAsTable": false,
+          "avg": false,
+          "current": true,
+          "hideEmpty": false,
+          "hideZero": false,
+          "max": false,
+          "min": false,
+          "show": true,
+          "total": false,
+          "values": true
+        },
+        "lines": true,
+        "linewidth": 1,
+        "nullPointMode": "connected",
+        "options": {
+          "dataLinks": []
+        },
+        "percentage": false,
+        "pluginVersion": "7.0.0",
+        "pointradius": 2,
+        "points": false,
+        "renderer": "flot",
+        "repeat": "beertiltcombo",
+        "seriesOverrides": [
+          {
+            "alias": "ABV",
+            "yaxis": 2
+          }
+        ],
+        "spaceLength": 10,
+        "stack": false,
+        "steppedLine": false,
+        "targets": [
+          {
+            "alias": "Attenuation",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT (($fsg - last(\"sg\")) / ($fsg -1)) * 100 FROM \"autogen\".\"mqtt_consumer\" WHERE topic =~ /^tilt\\/$beertiltcombo$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "ABV",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT ((mean(\"sg\") - $fsg) * 131.25) * -1 FROM \"autogen\".\"mqtt_consumer\" WHERE topic =~ /^tilt\\/$beertiltcombo$/ AND $timeFilter GROUP BY time($__interval) fill(null)",
+            "rawQuery": true,
+            "refId": "B",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          }
+        ],
+        "thresholds": [],
+        "timeFrom": null,
+        "timeRegions": [],
+        "timeShift": null,
+        "title": "$beertiltcombo",
+        "tooltip": {
+          "shared": true,
+          "sort": 0,
+          "value_type": "individual"
+        },
+        "transformations": [],
+        "type": "graph",
+        "xaxis": {
+          "buckets": null,
+          "mode": "time",
+          "name": null,
+          "show": true,
+          "values": []
+        },
+        "yaxes": [
+          {
+            "decimals": 1,
+            "format": "percent",
+            "label": "Attenuation",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          },
+          {
+            "decimals": 1,
+            "format": "percent",
+            "label": "ABV",
+            "logBase": 1,
+            "max": null,
+            "min": "0",
+            "show": true
+          }
+        ],
+        "yaxis": {
+          "align": true,
+          "alignLevel": 0
+        }
+      }
+    ],
+    "refresh": "1m",
+    "schemaVersion": 25,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "allValue": null,
+          "current": {
+            "selected": true,
+            "text": "All",
+            "value": [
+              "$__all"
+            ]
+          },
+          "datasource": "InfluxDB",
+          "definition": "select topic,last(temp) from mqtt_consumer  where time > NOW() - 72h group by \"topic\"",
+          "hide": 0,
+          "includeAll": true,
+          "label": "Tilt Colour/Beer name",
+          "multi": true,
+          "name": "beertiltcombo",
+          "options": [],
+          "query": "select topic,last(temp) from mqtt_consumer  where time > NOW() - 72h group by \"topic\"",
+          "refresh": 2,
+          "regex": "/^tilt\\/(.*)$/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        },
+        {
+          "allValue": null,
+          "current": {
+            "isNone": true,
+            "selected": false,
+            "text": "None",
+            "value": ""
+          },
+          "datasource": "InfluxDB",
+          "definition": "SELECT first(\"sg\") FROM \"autogen\".\"mqtt_consumer\" WHERE topic =~ /^tilt\\/$beertiltcombo$/",
+          "hide": 2,
+          "includeAll": false,
+          "label": null,
+          "multi": false,
+          "name": "fsg",
+          "options": [],
+          "query": "SELECT first(\"sg\") FROM \"autogen\".\"mqtt_consumer\" WHERE topic =~ /^tilt\\/$beertiltcombo$/",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-24h",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ]
+    },
+    "timezone": "",
+    "title": "Active Fermentations",
+    "uid": "2HdjXVigz",
+    "version": 88
+  }

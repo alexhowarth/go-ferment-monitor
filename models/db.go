@@ -18,7 +18,7 @@ func Init() {
 	}
 	//db.LogMode(true)
 
-	db.AutoMigrate(&MQTTConf{}) // TODO remember to add each model here
+	db.AutoMigrate(&MQTTConf{}) // TODO: remember to add each model here
 	db.AutoMigrate(&TiltConf{})
 	db.AutoMigrate(&Consumers{})
 }
